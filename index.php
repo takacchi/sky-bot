@@ -11,7 +11,7 @@ $events = $bot->parseEventRequest($inputString, $signature);
 error_log($inputString);
 
 foreach($events as $event) {
-  replyLocationMessage($bot, $event->getReplyToken, 'LINE', '東京都渋谷区渋谷2-21-1 ヒカリエ27階',
+  replyLocationMessage($bot, $event->getReplyToken(), 'LINE', '東京都渋谷区渋谷2-21-1 ヒカリエ27階',
                           35.659025, 139.703473);
 }
 
