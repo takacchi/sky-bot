@@ -85,4 +85,10 @@ function errorLog($response) {
   }
 }
 
+funciton replyTextMessage($bot, $replyToken, $text) {
+  $response = $bot->replyMessage($replyToken, new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($text));
+  if (!$response->isSucceeded()) {
+    errorLog($response);
+  }
+}
 ?>
