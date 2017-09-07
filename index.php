@@ -17,7 +17,7 @@ function replyLocationMessage($bot, $replyToken, $title, $address, $lat, $lon) {
   $response = $bot->replyMessage($replyToken, 
         new \LINE\LINEBot\MessageBuilder\LocationMessageBuilder($title, $address, $lat, $lon));
   if (!$response->isSucceeded()) {
-    error_log('Failed!', $response->getHTTPStatus . ' ' . $response->getRawBody());
+    error_log('Failed!'. $response->getHTTPStatus . ' ' . $response->getRawBody());
   }
 }
 ?>
