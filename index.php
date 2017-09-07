@@ -11,13 +11,49 @@ $events = $bot->parseEventRequest($inputString, $signature);
 error_log($inputString);
 
 foreach($events as $event) {
-  replyButtonsTemplate($bot, $event->getReplyToken(), 'お天気お知らせ - 今日の天気予報は晴れです',
-                  'https://' . $_SERVER['HTTP_HOST'] . '/imgs/template.jpg',
-                  'お天気お知らせ', '今日の天気予報は晴れです。',
-                  new \LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('明日の天気', 'tomorrow'),
-                  new \LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder('週末の天気', 'weekend'),
-                  new \LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder('Webで見る', 'http://google.jp'));
+  $location = $event->getText();
+  $locationId;
+  $client = new Goutte\Client();
+  $crawler = $client->request('GET', 'https://weather.livedoor.com/forecast/rss/primary_area.xml');
+  foreach($crawler->filter('channel ldWeather|source pref city') as $city) {
+    if ($city->getAttribute('title') == $location || $city->getAttribute('title') . "市" == $location) {
+      $locationId = $city->getAttribute('id');
+      break;
+    }
+  }
 
+  if(empty($locationId)) {
+    $suggestArray = array();
+    foreach($crawler->filter('channel ldWeather|source pref') as $pref) {
+      if (strpos($pref->getAttribute('title'), $location) !== false) {
+        foreach($pref->childNodes as $child) {
+          if($child instanceof DOMElement && $child->nodeName == 'city') {
+            array_push($suggestArray, $child->getAttribute('title'));
+          }
+        }
+        break;
+      }
+    }
+
+    if(count($suggestArray) > 0) {
+      $actionArray = array();
+      foreach($suggestArray as $city) {
+        array_push($actionArray, new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder($city, $city));
+      }
+      $builder = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder(
+          '見つかりませんでした',
+          new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder(
+             '見つかりませんでした。', 'もしかして？', null, $actionArray));
+
+      $bot->replyMessage($event->getReplyToken(), $builder);
+    } else {
+      replyTextMessage($bot, $event->getReplyToken(), '入力された地名が見つかりませんでした。市を入力してください');
+    }
+
+    continiue;
+  }
+
+  replyTextMessage($bot, $event->getReplyToken(), $location . 'の住所IDは' . $locationId . "です。");
 }
 
 function replyLocationMessage($bot, $replyToken, $title, $address, $lat, $lon) {
