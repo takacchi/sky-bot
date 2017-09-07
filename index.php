@@ -53,7 +53,7 @@ foreach($events as $event) {
     continiue;
   }
 
-  replyTextMessage($bot, $event->getReplyToken(), $location . 'の住所IDは' . $locationId . "です。");
+  replyTextMessage($bot, $event->getReplyToken(), $location . 'の住所IDは' . $locationId . 'です。');
 }
 
 function replyLocationMessage($bot, $replyToken, $title, $address, $lat, $lon) {
