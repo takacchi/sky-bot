@@ -14,7 +14,7 @@ foreach($events as $event) {
   $location = $event->getText();
   $locationId;
   $client = new Goutte\Client();
-  $crawler = $client->request('GET', 'https://weather.livedoor.com/forecast/rss/primary_area.xml');
+  $crawler = $client->request('GET', 'http://weather.livedoor.com/forecast/rss/primary_area.xml');
   foreach($crawler->filter('channel ldWeather|source pref city') as $city) {
     if ($city->getAttribute('title') == $location || $city->getAttribute('title') . "市" == $location) {
       $locationId = $city->getAttribute('id');
