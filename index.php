@@ -43,7 +43,7 @@ function replyButtonsTemplate($bot, $replyToken, $alternativeText, $imageUrl, $t
   }
 }
 
-funtion errorLog($response) {
+function errorLog($response) {
   if (!$response->isSucceeded()) {
     error_log('Failed!'. $response->getHTTPStatus . ' ' . $response->getRawBody());
   }
