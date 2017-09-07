@@ -7,6 +7,7 @@ $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET
 $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
 
 $events = $bot->parseEventRequest(file_get_contents('php://input'), $signature);
+error_log($events);
 
 foreach($events as $event) {
   replyLocationMessage($bot, $event->getReplyToken, 'LINE', '東京都渋谷区渋谷2-21-1 ヒカリエ27階',
