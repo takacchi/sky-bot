@@ -17,8 +17,9 @@ foreach($events as $event) {
     $jsonString = file_get_contents ('https://maps.googleapis.com/maps/api/geocode/json?language=ja&latlng=' . $event->getLatitude() . ',' . $event->getLongitude());
     $json = json_decode($jsonString, true);
 	$addressComponentArray = $json['results'][0]['address_components'];
+	error_log('addressComponentArray' . $addressComponentArray);
 	foreach($addressComponentArray as $addressComponent) {
-	  if (in_array('administrative_area_level_1', $addressComponent['type'])) {
+	  if (in_array('administrative_area_level_1', $addressComponent['types'])) {
 	    $prefName = $addressComponent['long_name'];
 		break;
 	  }
@@ -29,7 +30,7 @@ foreach($events as $event) {
 	  $location = '大阪';
 	} else {
 	  foreach ($addressComponentArray as $addressComponent) {
-	    if (in_array('locality', $addressComponent['type']) && !in_array('ward', $addressComponent['type'])) {
+	    if (in_array('locality', $addressComponent['types']) && !in_array('ward', $addressComponent['types'])) {
 		  $location = $addressComponent['long_name'];
 		  break;
 		}
