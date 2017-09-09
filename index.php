@@ -2,6 +2,10 @@
 // Bulk load libraries which are installed by composer
 require_once __DIR__ . '/vendor/autoload.php';
 
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+use LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
+use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
+
 $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
 $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET')]);
 $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
@@ -90,8 +94,8 @@ foreach($events as $event) {
 //  foreach($json['forecasts'] as $fc) {
    $image_url = $json['forecasts']['image']['url'];
    replyMultiMessage($bot, $event->getReplyToken(), 
-         new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $json[forecasts][temperature][min] . '/' . $json[forecasts][temperature][max]),
-		 new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($image_url, $image_url));
+         new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $json[forecasts][temperature][min] . '/' . $json[forecasts][temperature][max]),
+		 new ImageMessageBuilder($image_url, $image_url));
 //  }
 }
 
@@ -104,7 +108,7 @@ function replyLocationMessage($bot, $replyToken, $title, $address, $lat, $lon) {
 }
 
 function replyMultiMessage($bot, $replyToken, ...$msgs) {
-  $builder = new \LINE\LNINEBot\MessageBuilder\MultiMessageBuilder();
+  $builder = new MultiMessageBuilder();
   foreach($msgs as $msg) {
 	$builder->add($msg);
   }
