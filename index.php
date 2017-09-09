@@ -106,7 +106,7 @@ foreach($events as $event) {
 	 $msg = new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius);
 	 $image = new ImageMessageBuilder($image_url, $image_url);
 	 $builder->add($msg);
-	 $builder->add($image);
+//	 $builder->add($image);
 //	 replyMultiMessage($bot, $event->getReplyToken(), 
 //           new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius));
 //		   new ImageMessageBuilder($image_url, $image_url));
