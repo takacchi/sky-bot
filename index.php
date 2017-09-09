@@ -87,14 +87,27 @@ foreach($events as $event) {
 //  $date = date_parse_from_format('Y-m-d\TH:i:sP', $json['description']['publicTime']);
 //  replyTextMessage($bot, $event->getReplyToken(), $json['description']['text'] . PHP_EOL . PHP_EOL . '最終更新:' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minite']));
 //  replyTextMessage($bot, $event->getReplyToken(), $json['location']['city'] . 'の天気');
-  foreach($json['forecasts'] as $fc) {
-    replyTextMessage($bot, $event->getReplyToken(), $json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $fc['image']['url']);
-  }
+//  foreach($json['forecasts'] as $fc) {
+   replyMultiMessage($bot, $event->getReplyToken(), 
+         new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $json[forecasts][temperature][min] . '/' . $json[forecasts][temperature][max]),
+		 new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($json['image']['url']));
+//  }
 }
 
 function replyLocationMessage($bot, $replyToken, $title, $address, $lat, $lon) {
   $response = $bot->replyMessage($replyToken, 
         new \LINE\LINEBot\MessageBuilder\LocationMessageBuilder($title, $address, $lat, $lon));
+  if (!$response->isSucceeded()) {
+    errorLog($response);
+  }
+}
+
+function replyMultiMessage($bot, $replyToken, ...$msgs) {
+  $builder = new \LINE\LNINEBot\MessageBuilder\MultiMessageBuilder();
+  foreach($msgs as $msg) {
+	$builder->add($msg);
+  }
+  $response = $bot->replyMessage($replyToken, $builder);
   if (!$response->isSucceeded()) {
     errorLog($response);
   }
