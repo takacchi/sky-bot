@@ -95,11 +95,18 @@ foreach($events as $event) {
 //  replyTextMessage($bot, $event->getReplyToken(), $json['location']['city'] . 'の天気');
   foreach($json['forecasts'] as $fc) {
      $image_url = $fc['image']['url'];
-     replyMultiMessage($bot, $event->getReplyToken(), 
-           new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $fc['temperature']['min']['celsius'] . '/' . $fc['temperature']['max']['celsius']),
+	 $min = $fc['temperature']['min'];
+	 $max = $fc['temperature']['max'];
+	 $minCelsius = $fc['temperature']['min']['celsius'];
+	 $maxCelsius = $fc['temperature']['max']['celsius'];
+	 if (!isset($min)) { $minCelsius = "--"; }
+	 if (!isset($max)) { $maxCelsius = "--"; }
+	 replyMultiMessage($bot, $event->getReplyToken(), 
+           new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius),
 		   new ImageMessageBuilder($image_url, $image_url));
 //         new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $json[forecasts][temperature][min] . '/' . $json[forecasts][temperature][max]),
 //		 new ImageMessageBuilder($image_url, $image_url));
+     errorLog($fc);
   }
 }
 
