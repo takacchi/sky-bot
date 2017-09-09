@@ -90,7 +90,7 @@ foreach($events as $event) {
 //  foreach($json['forecasts'] as $fc) {
    replyMultiMessage($bot, $event->getReplyToken(), 
          new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $json[forecasts][temperature][min] . '/' . $json[forecasts][temperature][max]),
-		 new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($json['image']['url']));
+		 new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($json['forecasts']['image']['url']));
 //  }
 }
 
