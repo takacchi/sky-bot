@@ -11,7 +11,32 @@ $events = $bot->parseEventRequest($inputString, $signature);
 error_log($inputString);
 
 foreach($events as $event) {
-  $location = $event->getText();
+  if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
+    $location = $event->getText();
+  } else if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage) {
+    $jsonString = file_get_contents ('https://maps.googleapis.com/maps/api/geocode/json?language=ja&latlng=' . $event->getLatitude() . ',' . $event->getLongitude());
+    $json = json_decode($jsonString, true);
+	$addressComponentArray = $json['results'][0]['address_components'];
+	foreach($addressComponentArray as $addressComponent) {
+	  if (in_array('administrative_area_level_1', $addressComponent['type'])) {
+	    $prefName = $addressComponent['long_name'];
+		break;
+	  }
+	}
+	if ($prefName == '東京都') {
+	  $loation = '東京';
+	} else if ($prefName == '大阪府') {
+	  $location = '大阪';
+	} else {
+	  foreach ($addressComponentArray as $addressComponent) {
+	    if (in_array('locality', $addressComponent['type']) && !in_array('ward', $addressComponent['type'])) {
+		  $location = $addressComponent['long_name'];
+		  break;
+		}
+	  }
+	}
+  }
+
   $locationId;
   $client = new Goutte\Client();
   $crawler = $client->request('GET', 'http://weather.livedoor.com/forecast/rss/primary_area.xml');
@@ -23,6 +48,9 @@ foreach($events as $event) {
   }
 
   if(empty($locationId)) {
+	if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage)  {
+	   $loationId = $prefName;
+	}
     $suggestArray = array();
     foreach($crawler->filter('channel ldWeather|source pref') as $pref) {
       if (strpos($pref->getAttribute('title'), $location) !== false) {
@@ -47,7 +75,7 @@ foreach($events as $event) {
 
       $bot->replyMessage($event->getReplyToken(), $builder);
     } else {
-      replyTextMessage($bot, $event->getReplyToken(), '入力された地名が見つかりませんでした。市を入力してください');
+      replyTextMessage($bot, $event->getReplyToken(), '入力された地名が見つかりませんでした。市を入力してください。');
     }
 
     continiue;
