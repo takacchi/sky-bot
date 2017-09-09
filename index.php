@@ -102,11 +102,12 @@ foreach($events as $event) {
 	 if (!isset($min)) { $minCelsius = "--"; }
 	 if (!isset($max)) { $maxCelsius = "--"; }
 	 replyMultiMessage($bot, $event->getReplyToken(), 
-           new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius),
-		   new ImageMessageBuilder($image_url, $image_url));
+           new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius));
+//		   new ImageMessageBuilder($image_url, $image_url));
 //         new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $json[forecasts][temperature][min] . '/' . $json[forecasts][temperature][max]),
 //		 new ImageMessageBuilder($image_url, $image_url));
-     errorLog($fc);
+     error_log($fc);
+	 error_log($image_url);
   }
 }
 
