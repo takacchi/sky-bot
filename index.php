@@ -5,6 +5,10 @@ require_once __DIR__ . '/vendor/autoload.php';
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
 use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
+use LINE\LINEBot\MessageBuilder\LocationMessageBuilder
+use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
 
 $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
 $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET')]);
@@ -71,12 +75,10 @@ foreach($events as $event) {
     if(count($suggestArray) > 0) {
       $actionArray = array();
       foreach($suggestArray as $city) {
-        array_push($actionArray, new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder($city, $city));
+        array_push($actionArray, new MessageTemplateActionBuilder($city, $city));
       }
-      $builder = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder(
-          '見つかりませんでした',
-          new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder(
-             '見つかりませんでした。', 'もしかして？', null, $actionArray));
+      $builder = new TemplateMessageBuilder('見つかりませんでした',
+          new ButtonTemplateBuilder('見つかりませんでした。', 'もしかして？', null, $actionArray));
 
       $bot->replyMessage($event->getReplyToken(), $builder);
     } else {
@@ -94,14 +96,15 @@ foreach($events as $event) {
 //  foreach($json['forecasts'] as $fc) {
    $image_url = $json['forecasts']['image']['url'];
    replyMultiMessage($bot, $event->getReplyToken(), 
-         new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $json[forecasts][temperature][min] . '/' . $json[forecasts][temperature][max]),
-		 new ImageMessageBuilder($image_url, $image_url));
+         new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $json[forecasts][temperature][min] . '/' . $json[forecasts][temperature][max]));
+   errorLog($image_url);
+//         new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $json[forecasts][temperature][min] . '/' . $json[forecasts][temperature][max]),
+//		 new ImageMessageBuilder($image_url, $image_url));
 //  }
 }
 
 function replyLocationMessage($bot, $replyToken, $title, $address, $lat, $lon) {
-  $response = $bot->replyMessage($replyToken, 
-        new \LINE\LINEBot\MessageBuilder\LocationMessageBuilder($title, $address, $lat, $lon));
+  $response = $bot->replyMessage($replyToken, new LocationMessageBuilder($title, $address, $lat, $lon));
   if (!$response->isSucceeded()) {
     errorLog($response);
   }
@@ -124,8 +127,8 @@ function replyButtonsTemplate($bot, $replyToken, $alternativeText, $imageUrl, $t
     array_push($actionArray, $value);
   }
 
-  $builder = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder($alternativeText,
-                   new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder(
+  $builder = new TemplateMessageBuilder($alternativeText,
+                   new ButtonTemplateBuilder(
                       $title, $text, $imageUrl, $actionArray));
   $response = $bot->replyMessage($replyToken, $builder);
   if (!$response->isSucceeded()) {
@@ -140,7 +143,7 @@ function errorLog($response) {
 }
 
 function replyTextMessage($bot, $replyToken, $text) {
-  $response = $bot->replyMessage($replyToken, new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($text));
+  $response = $bot->replyMessage($replyToken, new TextMessageBuilder($text));
   if (!$response->isSucceeded()) {
     errorLog($response);
   }
