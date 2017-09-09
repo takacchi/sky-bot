@@ -82,7 +82,7 @@ foreach($events as $event) {
     continiue;
   }
 
-  $jsonString = file_get_contents('http://weather.livedoor.com/forecast/webservice/json/vi?city=' . $locationId);
+  $jsonString = file_get_contents('http://weather.livedoor.com/forecast/webservice/json/v1?city=' . $locationId);
   $json = json_decode($jsonString, true);
   $date = date_parse_from_format('Y-m-d\TH:i:sP', $json['description']['publicTime']);
   replyTextMessage($bot, $event->getReplyToken(), $json['description']['text'] . PHP_EOL . PHP.EOL . '最終更新:' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minite']));
