@@ -86,6 +86,10 @@ foreach($events as $event) {
   $json = json_decode($jsonString, true);
   $date = date_parse_from_format('Y-m-d\TH:i:sP', $json['description']['publicTime']);
   replyTextMessage($bot, $event->getReplyToken(), $json['description']['text'] . PHP_EOL . PHP_EOL . '最終更新:' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minite']));
+  replyTextMessage($bot, $event->getReplyToken(), $json['location']['city'] . 'の天気');
+  foreach($json['forecasts'] as $fc) {
+    replyTextMessage($bot, $event->getReplyToken(), $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $fc['image']['url']);
+  }
 }
 
 function replyLocationMessage($bot, $replyToken, $title, $address, $lat, $lon) {
