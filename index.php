@@ -94,9 +94,9 @@ foreach($events as $event) {
 //  replyTextMessage($bot, $event->getReplyToken(), $json['description']['text'] . PHP_EOL . PHP_EOL . '最終更新:' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minite']));
 //  replyTextMessage($bot, $event->getReplyToken(), $json['location']['city'] . 'の天気');
 //  foreach($json['forecasts'] as $fc) {
-   $image_url = $json['forecasts']['image']['url'];
+   $image_url = $json['forecasts'][0]['image']['url'];
    replyMultiMessage($bot, $event->getReplyToken(), 
-         new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $json['forecasts']['dataLabel'] . PHP_EOL . $json['forecasts']['telop'] . PHP_EOL . $json['forecasts']['temperature']['min'] . '/' . $json['forecasts']['temperature']['max']));
+         new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $json['forecasts'][0]['dataLabel'] . PHP_EOL . $json['forecasts'][0]['telop'] . PHP_EOL . $json['forecasts'][0]['temperature']['min'] . '/' . $json['forecasts'][0]['temperature']['max']));
    errorLog($image_url);
 //         new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $json[forecasts][temperature][min] . '/' . $json[forecasts][temperature][max]),
 //		 new ImageMessageBuilder($image_url, $image_url));
