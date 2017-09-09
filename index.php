@@ -104,7 +104,7 @@ foreach($events as $event) {
 	 if (!isset($min)) { $minCelsius = "--"; }
 	 if (!isset($max)) { $maxCelsius = "--"; }
 	 $msg = new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dataLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius);
-	 $image = new ImageMessageBuilder($image_url, $image_url));
+	 $image = new ImageMessageBuilder($image_url, $image_url);
 	 builder->add($msg);
 	 builder->add($image);
 //	 replyMultiMessage($bot, $event->getReplyToken(), 
