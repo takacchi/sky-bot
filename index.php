@@ -93,6 +93,8 @@ foreach($events as $event) {
 //  $date = date_parse_from_format('Y-m-d\TH:i:sP', $json['description']['publicTime']);
 //  replyTextMessage($bot, $event->getReplyToken(), $json['description']['text'] . PHP_EOL . PHP_EOL . '最終更新:' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minite']));
 //  replyTextMessage($bot, $event->getReplyToken(), $json['location']['city'] . 'の天気');
+
+  $builder = new MultiMessageBuilder();
   foreach($json['forecasts'] as $fc) {
      $image_url = $fc['image']['url'];
 	 $min = $fc['temperature']['min'];
@@ -122,6 +124,13 @@ function replyMultiMessage($bot, $replyToken, ...$msgs) {
   foreach($msgs as $msg) {
 	$builder->add($msg);
   }
+  $response = $bot->replyMessage($replyToken, $builder);
+  if (!$response->isSucceeded()) {
+    errorLog($response);
+  }
+}
+
+function replyMultiMessage($bot, $replyToken, $builder) {
   $response = $bot->replyMessage($replyToken, $builder);
   if (!$response->isSucceeded()) {
     errorLog($response);
