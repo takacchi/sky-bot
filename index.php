@@ -104,8 +104,12 @@ foreach($events as $event) {
 	 if (!isset($min)) { $minCelsius = "--"; }
 	 if (!isset($max)) { $maxCelsius = "--"; }
 	 $msg = new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dateLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius);
-	 $image = new ImageMessageBuilder($image_url, $image_url);
-	 $builder->add($msg);
+	 $image;
+	 if ($image_url == 'http://weather.livedoor.com/img/icon/1.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/1.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/2.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/2.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/9.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/9.jpg';}
+	 $imb = new ImageMessageBuilder($image;, $image;);
+	 $builder->add($imb);
 //		 $builder->add($image);
 //	 replyMultiMessage($bot, $event->getReplyToken(), 
 //           new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dateLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius));
