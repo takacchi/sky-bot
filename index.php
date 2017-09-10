@@ -90,9 +90,8 @@ foreach($events as $event) {
 
   $jsonString = file_get_contents('http://weather.livedoor.com/forecast/webservice/json/v1?city=' . $locationId);
   $json = json_decode($jsonString, true);
-//  $date = date_parse_from_format('Y-m-d\TH:i:sP', $json['description']['publicTime']);
-//  replyTextMessage($bot, $event->getReplyToken(), $json['description']['text'] . PHP_EOL . PHP_EOL . '最終更新:' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minite']));
-//  replyTextMessage($bot, $event->getReplyToken(), $json['location']['city'] . 'の天気');
+  $date = date_parse_from_format('Y-m-d\TH:i:sP', $json['description']['publicTime']);
+  $detail = $json['location']['city'] . 'の天気' . PHP_EOL . $json['description']['text'] . PHP_EOL . PHP_EOL . '最終更新:' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minite']);
 
   $builder = new MultiMessageBuilder();
   foreach($json['forecasts'] as $fc) {
@@ -111,15 +110,10 @@ foreach($events as $event) {
 	 else if ($image_url == 'http://weather.livedoor.com/img/icon/9.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/9.jpg';}
 	 $imb = new ImageMessageBuilder($image, $image);
 	 $builder->add($imb);
-//		 $builder->add($image);
-//	 replyMultiMessage($bot, $event->getReplyToken(), 
-//           new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dateLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius));
-//		   new ImageMessageBuilder($image_url, $image_url));
-//         new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dateLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $json[forecasts][temperature][min] . '/' . $json[forecasts][temperature][max]),
-//		 new ImageMessageBuilder($image_url, $image_url));
-	 error_log($image_url);
+	 break;
   }
   
+  $builder->add($detail);
   replyMultiMessages($bot, $event->getReplyToken(), $builder);
 }
 
