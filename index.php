@@ -104,7 +104,7 @@ foreach($events as $event) {
 	 if (!isset($max)) { $maxCelsius = "--"; }
 	 $msg = new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dateLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius);
 	 $builder->add($msg);
-<!-- 	 $image;
+	 $image;
 	 if ($image_url == 'http://weather.livedoor.com/img/icon/1.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/1.jpg';}
 	 else if ($image_url == 'http://weather.livedoor.com/img/icon/2.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/2.jpg';}
 	 else if ($image_url == 'http://weather.livedoor.com/img/icon/3.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/3.jpg';}
@@ -135,9 +135,9 @@ foreach($events as $event) {
 	 else if ($image_url == 'http://weather.livedoor.com/img/icon/28.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/28.jpg';}
 	 else if ($image_url == 'http://weather.livedoor.com/img/icon/29.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/29.jpg';}
 	 else if ($image_url == 'http://weather.livedoor.com/img/icon/30.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/30.jpg';}
-	 $imb = new ImageMessageBuilder($image, $image);
-	 $builder->add($imb);
-	 break; -->
+//	 $imb = new ImageMessageBuilder($image, $image);
+//	 $builder->add($imb);
+//	 break;
   }
   
   $builder->add($detail);
