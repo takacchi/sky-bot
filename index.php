@@ -140,7 +140,7 @@ foreach($events as $event) {
 //	 $imb = new ImageMessageBuilder($image, $image);
 //	 $builder->add($imb);
 //	 break;
-     if (fc['dateLabel'] == '明日') {
+     if ($fc['dateLabel'] == '明日') {
 	   break;
 	 }
   }
