@@ -92,6 +92,7 @@ foreach($events as $event) {
   $json = json_decode($jsonString, true);
   $date = date_parse_from_format('Y-m-d\TH:i:sP', $json['description']['publicTime']);
   $detail = new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $json['description']['text'] . PHP_EOL . PHP_EOL . '最終更新:' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minite']));
+  $builder->add($detail);
 
   $builder = new MultiMessageBuilder();
   foreach($json['forecasts'] as $fc) {
@@ -102,7 +103,7 @@ foreach($events as $event) {
 	 $maxCelsius = $fc['temperature']['max']['celsius'];
 	 if (!isset($min)) { $minCelsius = "--"; }
 	 if (!isset($max)) { $maxCelsius = "--"; }
-	 $msg = new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dateLabel'] . ' ' . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius . '℃');
+	 $msg = new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dateLabel'] . ' ' . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius . ' ℃');
 	 $builder->add($msg);
 	 $image;
 	 if ($image_url == 'http://weather.livedoor.com/img/icon/1.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/1.jpg';}
@@ -138,9 +139,11 @@ foreach($events as $event) {
 //	 $imb = new ImageMessageBuilder($image, $image);
 //	 $builder->add($imb);
 //	 break;
+     if (fc['dateLabel'] == '明日') {
+	   break;
+	 }
   }
   
-//  $builder->add($detail);
   replyMultiMessages($bot, $event->getReplyToken(), $builder);
 }
 
