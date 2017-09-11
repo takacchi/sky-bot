@@ -92,9 +92,10 @@ foreach($events as $event) {
   $json = json_decode($jsonString, true);
   $date = date_parse_from_format('Y-m-d\TH:i:sP', $json['description']['publicTime']);
   $detail = new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $json['description']['text'] . PHP_EOL . PHP_EOL . '最終更新:' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minite']));
-  $builder->add($detail);
 
   $builder = new MultiMessageBuilder();
+  $builder->add($detail);
+
   foreach($json['forecasts'] as $fc) {
      $image_url = $fc['image']['url'];
 	 $min = $fc['temperature']['min'];
