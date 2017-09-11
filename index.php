@@ -90,7 +90,6 @@ foreach($events as $event) {
 
   $jsonString = file_get_contents('http://weather.livedoor.com/forecast/webservice/json/v1?city=' . $locationId);
   $json = json_decode($jsonString, true);
-  error_log('JSON' . $json);
   $date = date_parse_from_format('Y-m-d\TH:i:sP', $json['description']['publicTime']);
   $detail = new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $json['description']['text'] . PHP_EOL . PHP_EOL . '最終更新:' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minite']));
 
@@ -105,7 +104,7 @@ foreach($events as $event) {
 	 if (!isset($max)) { $maxCelsius = "--"; }
 	 $msg = new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dateLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius);
 	 $builder->add($msg);
-	 $image;
+<!-- 	 $image;
 	 if ($image_url == 'http://weather.livedoor.com/img/icon/1.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/1.jpg';}
 	 else if ($image_url == 'http://weather.livedoor.com/img/icon/2.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/2.jpg';}
 	 else if ($image_url == 'http://weather.livedoor.com/img/icon/3.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/3.jpg';}
@@ -138,7 +137,7 @@ foreach($events as $event) {
 	 else if ($image_url == 'http://weather.livedoor.com/img/icon/30.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/30.jpg';}
 	 $imb = new ImageMessageBuilder($image, $image);
 	 $builder->add($imb);
-	 break;
+	 break; -->
   }
   
   $builder->add($detail);
