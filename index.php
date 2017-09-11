@@ -102,7 +102,7 @@ foreach($events as $event) {
 	 $maxCelsius = $fc['temperature']['max']['celsius'];
 	 if (!isset($min)) { $minCelsius = "--"; }
 	 if (!isset($max)) { $maxCelsius = "--"; }
-	 $msg = new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dateLabel'] . PHP_EOL . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius);
+	 $msg = new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $fc['dateLabel'] . ' ' . $fc['telop'] . PHP_EOL . $minCelsius . '/' . $maxCelsius . '℃');
 	 $builder->add($msg);
 	 $image;
 	 if ($image_url == 'http://weather.livedoor.com/img/icon/1.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/1.jpg';}
@@ -140,7 +140,7 @@ foreach($events as $event) {
 //	 break;
   }
   
-  $builder->add($detail);
+//  $builder->add($detail);
   replyMultiMessages($bot, $event->getReplyToken(), $builder);
 }
 
