@@ -90,6 +90,7 @@ foreach($events as $event) {
 
   $jsonString = file_get_contents('http://weather.livedoor.com/forecast/webservice/json/v1?city=' . $locationId);
   $json = json_decode($jsonString, true);
+  error_log('JSON' . $json);
   $date = date_parse_from_format('Y-m-d\TH:i:sP', $json['description']['publicTime']);
   $detail = new TextMessageBuilder($json['location']['city'] . 'の天気' . PHP_EOL . $json['description']['text'] . PHP_EOL . PHP_EOL . '最終更新:' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minite']));
 
@@ -107,7 +108,34 @@ foreach($events as $event) {
 	 $image;
 	 if ($image_url == 'http://weather.livedoor.com/img/icon/1.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/1.jpg';}
 	 else if ($image_url == 'http://weather.livedoor.com/img/icon/2.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/2.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/3.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/3.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/4.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/4.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/5.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/5.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/6.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/6.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/7.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/7.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/8.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/8.jpg';}
 	 else if ($image_url == 'http://weather.livedoor.com/img/icon/9.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/9.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/10.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/10.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/11.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/11.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/12.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/12.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/13.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/13.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/14.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/14.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/15.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/15.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/16.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/16.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/17.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/17.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/18.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/18.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/19.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/19.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/20.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/20.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/21.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/21.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/22.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/22.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/23.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/23.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/24.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/24.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/25.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/25.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/26.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/26.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/27.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/27.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/28.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/28.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/29.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/29.jpg';}
+	 else if ($image_url == 'http://weather.livedoor.com/img/icon/30.gif') { $image = 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/30.jpg';}
 	 $imb = new ImageMessageBuilder($image, $image);
 	 $builder->add($imb);
 	 break;
